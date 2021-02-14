@@ -1,4 +1,4 @@
-const utils = require('./utils');
+const utils = require('./backend/utils');
 
 const express = require('express');
 const path = require('path');
