@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import handleSubmit from './api';
 
 export default function MakeMeeting() {
 
@@ -13,10 +14,6 @@ export default function MakeMeeting() {
       ...meetingInputs,
       [event.target.name]: event.target.value
     });
-  }
-
-  const submit = () => {
-    console.log(meetingInputs);
   }
 
   return (
@@ -55,7 +52,7 @@ export default function MakeMeeting() {
 
         <button
           type="button"
-          onClick={submit}
+          onClick={() => handleSubmit(meetingInputs)}
         >
           Submit
         </button>
