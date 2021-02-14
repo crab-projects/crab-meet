@@ -6,7 +6,7 @@
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
       "start": "cd backend && node index.js",  
-      "heroku-postbuild": "cd backend/client && npm run build"
+      "heroku-postbuild": "cd client && npm run build"
     },
     "keywords": [],
     "author": "",
