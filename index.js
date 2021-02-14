@@ -55,4 +55,4 @@ const port = process.env.PORT || 5000 || '0.0.0.0';
 app.listen(port);
 
 console.log(`When-2-Not-Meet listening on ${port}`);
-console.log(utils.generatePassword());
+//console.log(utils.generatePassword());
