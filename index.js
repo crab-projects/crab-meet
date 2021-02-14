@@ -7,32 +7,36 @@ cors = require("cors");
 
 //const bodyParser = require('body-parser');
 
-/*const Pool = require('pg').Pool;
-const pool = new Pool({
-  user: 'me',
-  host: 'localhost',
-  database: 'api',
-  password: 'password',
-  port: 5432,
-});
-*/
 const app = express();
 app.use(express.json()); 
 app.use(cors());
+
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+client.connect();
+
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 app.post('/api/makeMeeting', (req, res) => {
   
-
-  /*pool.query('insert into meetings (meetingID, meetingName, password) values ("meeting1", "Dinner at ike", "1234);', (error, results) => {
-    if (error) {
-      throw error
+  const query = 'insert into meetings (meetingID, meetingName, password) values ("meeting1", "Dinner at ike", "1234);';
+  client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+    if (err) throw err;
+    for (let row of res.rows) {
+      console.log(JSON.stringify(row));
     }
+    client.end();
   });
-  response.status(201).send(`User added with ID: ${}`)
-  */
+
   console.log(req.body);
   //const { meetingName, hostName } = req.body;
   //console.log("Meeting name: " + meetingName);
