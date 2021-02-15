@@ -48,7 +48,6 @@ app.post("/api/makeMeeting", (req, res) => {
 
 app.get('/api/meeting/:meetingID', (req, res) => {
   const { meetingID } = req.params;
-  let meetingName = '';
   // Query database for meeting name
   const query = "select meetingName from meetings where meetingID = $1";
   client.query(
@@ -67,16 +66,22 @@ app.get('/api/meeting/:meetingID', (req, res) => {
   
 });
 
-app.get('/api/meeting/:meetingID/password/:password', (req, res) => {
-  const { meetingID, password } = req.params;
+app.get('/api/meetingLogin', (req, res) => {
+  const { meetingID, password } = req.query;
 
   // Query database for meeting data
-
-  const meetingData = {
-    message: 'Success!'
-  };
-
-  res.send(meetingData);
+  const query = "select password from meetings where meetingID = $1";
+  client.query(
+    query,
+    [ meetingID ],
+    (err, resq) => {
+      if (err) throw err;
+      console.log(resq.rows[0]);
+      res.send({
+        correct: password === resq.rows[0].password
+      });
+    }
+  );
   
 });
 

@@ -26,6 +26,23 @@ export async function getMeetingName(meetingID, setMeetingName) {
     });
 }
 
+export async function loginMeeting(loginInputs, setLoginResult, history) {
+  console.log('LOGIN INPUT: ' + loginInputs);
+  const { meetingID, password } = loginInputs;
+  axios.get(API_PATH + '/api/meetingLogin/?meetingID=' + meetingID + '&password=' + password)
+    .then((res) => {
+      console.log('LOGIN RESPONSE: ' + res);
+      const { correct } = res.data;
+      setLoginResult(correct);
+      if (correct) {
+        const newUrl = '/meeting/' + meetingID + '/password/' + password;
+        history.push(newUrl);
+      }
+    }).catch((error) => {
+      console.log(error);
+    })
+}
+
 export async function getMeetingData(meetingID, password, setMeetingData) {
   axios.get(API_PATH + '/api/meeting/' + meetingID + '/password/' + password)
     .then((res) => {
