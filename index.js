@@ -47,6 +47,13 @@ app.post("/api/makeMeeting", (req, res) => {
   });
 });
 
+app.get('/api/:meetCode', (req, res) => {
+  const meetCode = req.params.meetCode;
+  res.send({
+    message: 'meetCode: ' + meetCode
+  });
+});
+
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get("*", (req, res) => {
