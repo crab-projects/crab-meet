@@ -1,48 +1,50 @@
-const utils = require('./backend/utils');
+require("dotenv").config();
 
-const express = require('express');
-const path = require('path');
+const utils = require("./backend/utils");
+
+const express = require("express");
+const path = require("path");
 
 cors = require("cors");
 
-//const bodyParser = require('body-parser');
-
-/*const Pool = require('pg').Pool;
-const pool = new Pool({
-  user: 'me',
-  host: 'localhost',
-  database: 'api',
-  password: 'password',
-  port: 5432,
-});
-*/
 const app = express();
-app.use(express.json()); 
+app.use(express.json());
 app.use(cors());
 
+const { Client } = require("pg");
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+client.connect();
+
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'frontend/build')));
+app.use(express.static(path.join(__dirname, "frontend/build")));
 
-app.post('/api/makeMeeting', (req, res) => {
-  
-
-  /*pool.query('insert into meetings (meetingID, meetingName, password) values ("meeting1", "Dinner at ike", "1234);', (error, results) => {
-    if (error) {
-      throw error
+app.post("/api/makeMeeting", (req, res) => {
+  const query =
+    "insert into meetings (meetingID, meetingName, password) values ('meeting', 'Dinner at ike', 1234);";
+  client.query(
+    query,
+    (err, res) => {
+      if (err) throw err;
+      for (let row of res.rows) {
+        console.log(JSON.stringify(row));
+      }
+      client.end();
     }
-  });
-  response.status(201).send(`User added with ID: ${}`)
-  */
+  );
+
   console.log(req.body);
-  //const { meetingName, hostName } = req.body;
-  //console.log("Meeting name: " + meetingName);
 
-  console.log('Called endpoint.');
+  console.log("Called endpoint.");
   res.send({
-    message: 'Success!!!'
+    message: "Success!!!",
   });
-  //const password = utils.generatePassword();
-
 });
 
 app.get('/api/:meetCode', (req, res) => {
@@ -54,11 +56,11 @@ app.get('/api/:meetCode', (req, res) => {
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend/build/index.html'));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/build/index.html"));
 });
 
-const port = process.env.PORT || 5000 || '0.0.0.0';
+const port = process.env.PORT || 5000 || "0.0.0.0";
 app.listen(port);
 
 console.log(`When-2-Not-Meet listening on ${port}`);
