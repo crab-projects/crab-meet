@@ -12,7 +12,7 @@ export default function Meeting() {
 
   return (
     <>
-      <h1>Hello</h1>
+      <h1>Meeting</h1>
       {meetingData.message}
     </>
   );

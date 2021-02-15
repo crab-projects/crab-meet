@@ -72,7 +72,9 @@ app.get('/api/meeting/:meetingID/password/:password', (req, res) => {
 
   // Query database for meeting data
 
-  const meetingData = {};
+  const meetingData = {
+    message: 'Success!'
+  };
 
   res.send(meetingData);
   
