@@ -7,6 +7,4 @@ const generatePassword = () => {
   return id;
 }
 
-console.log(generatePassword());
-
 exports.generatePassword = generatePassword;
