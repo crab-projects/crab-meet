@@ -34,7 +34,6 @@ app.post("/api/makeMeeting", (req, res) => {
     [ meetingID, meetingName, password ],
     (err, res) => {
       if (err) throw err;
-      client.end();
     }
   );
   console.log("Posted new meeting to db.");
@@ -47,11 +46,36 @@ app.post("/api/makeMeeting", (req, res) => {
 
 });
 
-app.get('/api/:meetCode', (req, res) => {
-  const meetCode = req.params.meetCode;
-  res.send({
-    message: 'meetCode: ' + meetCode
-  });
+app.get('/api/meeting/:meetingID', (req, res) => {
+  const { meetingID } = req.params;
+  let meetingName = '';
+  // Query database for meeting name
+  const query = "select meetingName from meetings where meetingID = $1";
+  client.query(
+    query,
+    [ meetingID ],
+    (err, resq) => {
+      if (err) throw err;
+      console.log(resq.rows[0].meetingname);
+      meetingName = resq.rows[0].meetingname;
+      res.send({
+        meetingName
+      });
+      console.log('meetingName inside:' + meetingName);
+    }
+  );
+  
+});
+
+app.get('/api/meeting/:meetingID/password/:password', (req, res) => {
+  const { meetingID, password } = req.params;
+
+  // Query database for meeting data
+
+  const meetingData = {};
+
+  res.send(meetingData);
+  
 });
 
 // The "catchall" handler: for any request that doesn't
