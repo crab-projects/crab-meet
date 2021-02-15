@@ -6,13 +6,13 @@ export default function Meeting() {
 
   const [ meetingData, setMeetingData ] = React.useState({});
 
-  let { meetCode } = useParams();
+  let { meetingID, password } = useParams();
 
-  React.useEffect(() => getMeetingData(meetCode, setMeetingData), []);
+  React.useEffect(() => getMeetingData(meetingID, password, setMeetingData), []);
 
   return (
     <>
-      <h1>Hello</h1>
+      <h1>Meeting</h1>
       {meetingData.message}
     </>
   );
