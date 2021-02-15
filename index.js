@@ -1,50 +1,50 @@
 require("dotenv").config();
-
 const utils = require("./backend/utils");
-
 const express = require("express");
 const path = require("path");
-
-cors = require("cors");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-const { Client } = require("pg");
 
+// Connect to PostgreSQL DB
+const { Client } = require("pg");
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
   },
 });
-
 client.connect();
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "frontend/build")));
 
+// Create meeting and send back meetCode
 app.post("/api/makeMeeting", (req, res) => {
-  const query =
-    "insert into meetings (meetingID, meetingName, password) values ('meeting', 'Dinner at ike', 1234);";
+  const meetingID = utils.generatePassword();
+  const { meetingName } = req.body;
+  const password = '1234'; // Temporary fixed value
+
+  const query = "insert into meetings (meetingID, meetingName, password) values ($1, $2, $3);";
   client.query(
     query,
+    [ meetingID, meetingName, password ],
     (err, res) => {
       if (err) throw err;
-      for (let row of res.rows) {
-        console.log(JSON.stringify(row));
-      }
       client.end();
     }
   );
+  console.log("Posted new meeting to db.");
 
-  console.log(req.body);
-
-  console.log("Called endpoint.");
   res.send({
-    message: "Success!!!",
+    meetingID: meetingID,
+    password: password,
   });
+  console.log("Sent back meeting url.");
+
 });
 
 app.get('/api/:meetCode', (req, res) => {

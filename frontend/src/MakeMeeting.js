@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { handleSubmit } from './api';
 
 export default function MakeMeeting() {
@@ -8,6 +8,8 @@ export default function MakeMeeting() {
     meetingName: "",
     hostName: ""
   });
+
+  const history = useHistory();
 
   const handleChange = (event) => {
     setMeetingInputs({
@@ -52,7 +54,7 @@ export default function MakeMeeting() {
 
         <button
           type="button"
-          onClick={() => handleSubmit(meetingInputs)}
+          onClick={() => handleSubmit(meetingInputs, history)}
         >
           Submit
         </button>
