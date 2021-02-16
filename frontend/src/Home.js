@@ -8,14 +8,14 @@ export const Wrapper = styled.div`
 
 `;
 
-export const H1 = styled.h1`
+export const Title = styled.h1`
   font-family: Roboto;
   font-size: 50px;
   
 
 `;
 
-export const Hr = styled.hr`
+export const Divider = styled.hr`
   opacity: 0.5;
 `;
 
@@ -49,8 +49,8 @@ export default function Home() {
           @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
         `}</style>
 
-        <H1>🦀CrabMeet</H1>
-        <Hr/>
+        <Title>🦀 CrabMeet</Title>
+        <Divider/>
         <Subtitle>Get together and have a good time, crab-style: without the hassle.</Subtitle>
         <Link to="/make">
           <Button type="button">Make Meeting</Button>

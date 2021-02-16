@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { handleSubmit } from './api';
-import { Wrapper, H1, Hr, Button } from './Home';
+import { Wrapper, Title, Divider, Button } from './Home';
 import styled from 'styled-components';
 
 const Form = styled.form`
@@ -33,8 +33,8 @@ export default function MakeMeeting() {
           }
         `}</style>
 
-      <H1>🍽️ Make meeting</H1>
-      <Hr/>
+      <Title>🍽️ Make meeting</Title>
+      <Divider/>
       <Link to="/">
         <Button type="button">Go Home</Button>
       </Link>
