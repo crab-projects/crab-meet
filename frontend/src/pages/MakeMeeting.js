@@ -1,12 +1,17 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { handleSubmit } from './api';
+import { handleSubmit } from '../api';
+import { Wrapper, Title, Divider, Button } from './Home';
+import styled from 'styled-components';
+
+const Form = styled.form`
+  font-family: Roboto;
+`;
 
 export default function MakeMeeting() {
-
   const [meetingInputs, setMeetingInputs] = React.useState({
-    meetingName: "",
-    hostName: ""
+    meetingName: '',
+    hostName: '',
   });
 
   const history = useHistory();
@@ -14,20 +19,21 @@ export default function MakeMeeting() {
   const handleChange = (event) => {
     setMeetingInputs({
       ...meetingInputs,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
-  }
+  };
 
   return (
-    <>
-      <h1>Make Meeting</h1>
+    <Wrapper>
+      <Title>🍽️ Make meeting</Title>
+      <Divider />
       <Link to="/">
-        <button type="button">Go Home</button>
+        <Button type="button">Go Home</Button>
       </Link>
 
       <br></br>
       <br></br>
-      <form>
+      <Form>
         <label>Meeting Name: </label>
         <input
           type="text"
@@ -52,13 +58,13 @@ export default function MakeMeeting() {
         <br />
         <br />
 
-        <button
+        <Button
           type="button"
           onClick={() => handleSubmit(meetingInputs, history)}
         >
           Submit
-        </button>
-      </form>
-    </>
+        </Button>
+      </Form>
+    </Wrapper>
   );
 }
