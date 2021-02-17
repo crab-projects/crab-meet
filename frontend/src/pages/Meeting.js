@@ -1,6 +1,6 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { getMeetingData } from "./api";
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { getMeetingData } from '../api';
 
 export default function Meeting() {
   const [meetingData, setMeetingData] = React.useState({});
