@@ -22,10 +22,10 @@ client.connect();
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 // Create meeting and send back meetCode
-app.post('/api/makeMeeting', (req, res) => {
-  const meetingID = utils.generatePassword();
+app.post("/api/makeMeeting", (req, res) => {
+  const meetingID = utils.generateID();
   const { meetingName } = req.body;
-  const password = '1234'; // Temporary fixed value
+  const password = utils.generatePassword(); 
 
   const query =
     'insert into meetings (meetingID, meetingName, password) values ($1, $2, $3);';
@@ -80,4 +80,3 @@ const port = process.env.PORT || 5000 || '0.0.0.0';
 app.listen(port);
 
 console.log(`When-2-Not-Meet listening on ${port}`);
-//console.log(utils.generatePassword());
