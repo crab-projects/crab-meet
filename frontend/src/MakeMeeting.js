@@ -1,18 +1,17 @@
-import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { handleSubmit } from './api';
-import { Wrapper, Title, Divider, Button } from './Home';
-import styled from 'styled-components';
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
+import { handleSubmit } from "./api";
+import { Wrapper, Title, Divider, Button } from "./Home";
+import styled from "styled-components";
 
 const Form = styled.form`
   font-family: Roboto;
 `;
 
 export default function MakeMeeting() {
-
   const [meetingInputs, setMeetingInputs] = React.useState({
     meetingName: "",
-    hostName: ""
+    hostName: "",
   });
 
   const history = useHistory();
@@ -20,13 +19,13 @@ export default function MakeMeeting() {
   const handleChange = (event) => {
     setMeetingInputs({
       ...meetingInputs,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
-  }
+  };
 
   return (
     <Wrapper>
-        <style>{`      
+      <style>{`      
           @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
           hr {
             margin-bottom: 25px;
@@ -34,7 +33,7 @@ export default function MakeMeeting() {
         `}</style>
 
       <Title>🍽️ Make meeting</Title>
-      <Divider/>
+      <Divider />
       <Link to="/">
         <Button type="button">Go Home</Button>
       </Link>

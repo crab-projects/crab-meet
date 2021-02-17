@@ -8,7 +8,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-
 // Connect to PostgreSQL DB
 const { Client } = require("pg");
 const client = new Client({
@@ -28,14 +27,12 @@ app.post("/api/makeMeeting", (req, res) => {
   const { meetingName } = req.body;
   const password = utils.generatePassword(); 
 
-  const query = "insert into meetings (meetingID, meetingName, password) values ($1, $2, $3);";
-  client.query(
-    query,
-    [ meetingID, meetingName, password ],
-    (err, res) => {
-      if (err) throw err;
-    }
-  );
+
+  const query =
+    "insert into meetings (meetingID, meetingName, password) values ($1, $2, $3);";
+  client.query(query, [meetingID, meetingName, password], (err, res) => {
+    if (err) throw err;
+  });
   console.log("Posted new meeting to db.");
 
   res.send({
@@ -43,46 +40,35 @@ app.post("/api/makeMeeting", (req, res) => {
     password: password,
   });
   console.log("Sent back meeting url.");
-
 });
 
-app.get('/api/meeting/:meetingID', (req, res) => {
+app.get("/api/meeting/:meetingID", (req, res) => {
   const { meetingID } = req.params;
   // Query database for meeting name
   const query = "select meetingName from meetings where meetingID = $1";
-  client.query(
-    query,
-    [ meetingID ],
-    (err, resq) => {
-      if (err) throw err;
-      console.log(resq.rows[0].meetingname);
-      meetingName = resq.rows[0].meetingname;
-      res.send({
-        meetingName
-      });
-      console.log('meetingName inside:' + meetingName);
-    }
-  );
-  
+  client.query(query, [meetingID], (err, resq) => {
+    if (err) throw err;
+    console.log(resq.rows[0].meetingname);
+    meetingName = resq.rows[0].meetingname;
+    res.send({
+      meetingName,
+    });
+    console.log("meetingName inside:" + meetingName);
+  });
 });
 
-app.get('/api/meetingLogin', (req, res) => {
+app.get("/api/meetingLogin", (req, res) => {
   const { meetingID, password } = req.query;
 
   // Query database for meeting data
   const query = "select password from meetings where meetingID = $1";
-  client.query(
-    query,
-    [ meetingID ],
-    (err, resq) => {
-      if (err) throw err;
-      console.log(resq.rows[0]);
-      res.send({
-        correct: password === resq.rows[0].password
-      });
-    }
-  );
-  
+  client.query(query, [meetingID], (err, resq) => {
+    if (err) throw err;
+    console.log(resq.rows[0]);
+    res.send({
+      correct: password === resq.rows[0].password,
+    });
+  });
 });
 
 // The "catchall" handler: for any request that doesn't
