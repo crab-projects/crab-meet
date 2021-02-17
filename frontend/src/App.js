@@ -7,8 +7,8 @@ function App() {
   return (
     <main>
       <Switch>
-        <Route path="/make" component={Home} exact />
-        <Route path="/" component={MakeMeeting} />
+        <Route path="/" component={Home} exact />
+        <Route path="/make" component={MakeMeeting} />
         <Route path="/meetingLogin/:meetingID" component={MeetingLogin} />
         <Route
           path="/meeting/:meetingID/password/:password"
