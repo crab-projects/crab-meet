@@ -78,7 +78,6 @@ app.get('/api/meeting', (req, res) => {
   const query = 'select * from meetings';
   client.query(query, (err, resq) => {
     if (err) throw err;
-    console.log(resq.rows);
     res.send({
       
     });
