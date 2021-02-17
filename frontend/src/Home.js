@@ -1,18 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 export const Wrapper = styled.div`
   margin: auto;
   width: 70%;
-
 `;
 
 export const Title = styled.h1`
   font-family: Roboto;
   font-size: 50px;
-  
-
 `;
 
 export const Divider = styled.hr`
@@ -39,18 +36,17 @@ export const Button = styled.button`
     opacity: 0.8;
     cursor: pointer;
   }
-
 `;
 
 export default function Home() {
-    return (
-      <Wrapper>
-        <Title>🦀 CrabMeet</Title>
-        <Divider/>
-        <Subtitle>Get together and have a good time, crab-style: without the hassle.</Subtitle>
-        <Link to="/make">
-          <Button type="button">Make Meeting</Button>
-        </Link>
-      </Wrapper>
-    );
-  }
+  return (
+    <Wrapper>
+      <Title>🦀 CrabMeet</Title>
+      <Divider/>
+      <Subtitle>Get together and have a good time, crab-style: without the hassle.</Subtitle>
+      <Link to="/make">
+        <Button type="button">Make Meeting</Button>
+      </Link>
+    </Wrapper>
+  );
+}
