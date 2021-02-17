@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   margin: auto;
@@ -41,15 +41,9 @@ export const Button = styled.button`
 export default function Home() {
   return (
     <Wrapper>
-      <style>{`      
-          @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
-        `}</style>
-
       <Title>🦀 CrabMeet</Title>
-      <Divider />
-      <Subtitle>
-        Get together and have a good time, crab-style: without the hassle.
-      </Subtitle>
+      <Divider/>
+      <Subtitle>Get together and have a good time, crab-style: without the hassle.</Subtitle>
       <Link to="/make">
         <Button type="button">Make Meeting</Button>
       </Link>

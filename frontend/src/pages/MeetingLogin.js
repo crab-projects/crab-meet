@@ -1,14 +1,14 @@
-import React from "react";
-import { useParams, useHistory } from "react-router-dom";
-import { getMeetingName, loginMeeting } from "./api";
+import React from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import { getMeetingName, loginMeeting } from '../api';
 
 export default function MeetingLogin() {
   let { meetingID } = useParams();
 
-  const [meetingName, setMeetingName] = React.useState("Loading...");
+  const [meetingName, setMeetingName] = React.useState('Loading...');
   const [loginInputs, setLoginInputs] = React.useState({
     meetingID: meetingID,
-    password: "",
+    password: '',
   });
   const [loginResult, setLoginResult] = React.useState(null);
 
@@ -53,9 +53,9 @@ export default function MeetingLogin() {
       <p>
         {loginResult != null
           ? loginResult
-            ? "Password is correct! Login Successful."
-            : "Password is incorrect. Try again."
-          : ""}
+            ? 'Password is correct! Login Successful.'
+            : 'Password is incorrect. Try again.'
+          : ''}
       </p>
     </>
   );

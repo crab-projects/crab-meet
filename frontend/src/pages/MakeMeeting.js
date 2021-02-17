@@ -1,8 +1,8 @@
-import React from "react";
-import { Link, useHistory } from "react-router-dom";
-import { handleSubmit } from "./api";
-import { Wrapper, Title, Divider, Button } from "./Home";
-import styled from "styled-components";
+import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { handleSubmit } from '../api';
+import { Wrapper, Title, Divider, Button } from './Home';
+import styled from 'styled-components';
 
 const Form = styled.form`
   font-family: Roboto;
@@ -10,8 +10,8 @@ const Form = styled.form`
 
 export default function MakeMeeting() {
   const [meetingInputs, setMeetingInputs] = React.useState({
-    meetingName: "",
-    hostName: "",
+    meetingName: '',
+    hostName: '',
   });
 
   const history = useHistory();
@@ -25,13 +25,6 @@ export default function MakeMeeting() {
 
   return (
     <Wrapper>
-      <style>{`      
-          @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
-          hr {
-            margin-bottom: 25px;
-          }
-        `}</style>
-
       <Title>🍽️ Make meeting</Title>
       <Divider />
       <Link to="/">
