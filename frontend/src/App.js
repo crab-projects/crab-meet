@@ -1,10 +1,7 @@
-import React from "react";
-import { Route, Switch, useParams } from "react-router-dom";
+import React from 'react';
+import { Route, Switch, useParams } from 'react-router-dom';
 
-import Home from "./Home";
-import MakeMeeting from "./MakeMeeting";
-import MeetingLogin from "./MeetingLogin";
-import Meeting from "./Meeting";
+import { Home, MakeMeeting, Meeting, MeetingLogin } from './pages/index.js';
 
 function App() {
   return (
