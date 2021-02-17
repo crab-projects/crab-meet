@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+<<<<<<< HEAD
+=======
+import '@fontsource/roboto';
+>>>>>>> main
 
 ReactDOM.render(
   <BrowserRouter>
