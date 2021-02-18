@@ -85,11 +85,12 @@ const Calendar = (startDate, endDate, startTime, endTime, timesInput, edit) => {
     const days = [];
     for (let day = 0; day < nDays; day++) {
       const index = day * nTimes + time;
-      days.push(<td key={index}
-                    style={{background: (timeValues[index] ? 'blue' : 'red')}}
-                    onMouseDown={() => handleMouseDown(!timeValues[index])}
-                    onMouseUp={handleMouseUp}
-                    onMouseOver={() => handleDrag(index)}>
+      days.push(<td 
+                  key={index}
+                  style={{background: (timeValues[index] ? '#ff9e78' : 'white')}}
+                  onMouseDown={() => handleMouseDown(!timeValues[index])}
+                  onMouseUp={handleMouseUp}
+                  onMouseOver={() => handleDrag(index)}>
                 </td>);
     }
     times.push(<tr>{days}</tr>);
