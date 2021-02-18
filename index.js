@@ -59,7 +59,7 @@ app.get('/api/meeting/:meetingID', (req, res) => {
 app.get('/api/meetingLogin', (req, res) => {
   const { meetingID, password } = req.query;
 
-  // Query database for meeting data
+  // Query database for meeting password
   const query = 'select password from meetings where meetingID = $1';
   client.query(query, [meetingID], (err, resq) => {
     if (err) throw err;
@@ -68,6 +68,21 @@ app.get('/api/meetingLogin', (req, res) => {
       correct: password === resq.rows[0].password,
     });
   });
+});
+
+// Placeholder for actual meeting data endpoint
+app.get('/api/meeting', (req, res) => {
+  const { meetingID, password } = req.query;
+  
+  // Query database for meeting data
+  const query = 'select * from meetings';
+  client.query(query, (err, resq) => {
+    if (err) throw err;
+    res.send({
+      
+    });
+  });
+
 });
 
 // The "catchall" handler: for any request that doesn't

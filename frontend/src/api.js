@@ -57,7 +57,12 @@ export async function loginMeeting(loginInputs, setLoginResult, history) {
 
 export async function getMeetingData(meetingID, password, setMeetingData) {
   axios
-    .get(API_PATH + '/api/meeting/' + meetingID + '/password/' + password)
+    .get(API_PATH +
+        '/api/meeting/?meetingID=' +
+        meetingID +
+        '&password=' +
+        password
+    )
     .then((res) => {
       console.log(res);
       setMeetingData(res.data);
