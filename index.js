@@ -104,6 +104,27 @@ app.get('/api/meeting', (req, res) => {
   });
 });
 
+// Create meeting and send back meetCode
+app.post("/api/userInput/:meetingID", (req, res) => {
+  const userID = utils.generateID(); // how do we generate userIDs?
+  const { meetingID } = req.params;
+  const { password, userName, times } = req.body;
+  // const query =
+  //   `insert into meetings (meetingID, meetingName, password, starttimestamp, endtimestamp, earliesttime, latesttime
+  //     ) values ($1, $2, $3, $4, $5, $6, $7);`;
+  // client.query(query, [meetingID, meetingName, password, startDate, endDate, startTime, endTime], (err, res) => {
+  //   if (err) throw err;
+  // });
+  // console.log('Posted new meeting to db.');
+
+  // res.send({
+  //   meetingID: meetingID,
+  //   password: password,
+  // });
+  // console.log('Sent back meeting url.');
+});
+
+
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get('*', (req, res) => {
