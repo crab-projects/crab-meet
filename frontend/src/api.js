@@ -55,6 +55,11 @@ export async function loginMeeting(loginInputs, setLoginResult, history) {
     });
 }
 
+export async function inputUserTimes(userName, times) {
+  console.log(userName);
+  console.log(times);
+}
+
 export async function getMeetingData(meetingID, password, setMeetingData) {
   axios
     .get(API_PATH +

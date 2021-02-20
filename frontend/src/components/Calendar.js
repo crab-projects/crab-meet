@@ -50,8 +50,6 @@ const Calendar = (props) => {
   
   const [ timeValues, setTimeValues ] = React.useState(new Array(24 * 7).fill(false));
 
-  console.log(timeValues);
-
   const [ mouseDown, setMouseDown ] = React.useState(false);
   const [ busy, setBusy ] = React.useState(false);
  
@@ -79,7 +77,6 @@ const Calendar = (props) => {
   }
 
   const processTimes = () => {
-    console.log(timeValues);
     submitUserTimes(timeValues);
   }
 
@@ -122,6 +119,7 @@ const Calendar = (props) => {
         <Button key={'left'}>{'<'}</Button>
         <Button key={'right'}>{'>'}</Button>
       </ButtonBox>
+      <br />
       {edit && <Button onClick={() => processTimes()}>Submit</Button>}
     </Wrapper>
   );

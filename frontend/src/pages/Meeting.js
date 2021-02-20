@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { getMeetingData } from '../api';
+import { getMeetingData, inputUserTimes } from '../api';
 import styled from 'styled-components';
 import { Calendar, Layout } from '@components';
 import { Title } from '@styles';
@@ -11,8 +11,16 @@ const CalendarWrapper = styled.div`
   justify-content: space-around;
 `;
 
+const NameInput = styled.input`
+  width: 40%;
+  margin-left: 2rem;
+`;
+
 export default function Meeting() {
+
   const [meetingData, setMeetingData] = React.useState({});
+
+  const [ userName, setUserName ] = React.useState('');
 
   let { meetingID, password } = useParams();
 
@@ -24,8 +32,15 @@ export default function Meeting() {
     []
   );
 
-  const submitUserTimes = (timeValues) => {
-    console.log('Called parent function.');
+  React.useEffect(
+    () => {
+      console.log(userName);
+    },
+    [userName]
+  );
+
+  const submitUserTimes = (times) => {
+    inputUserTimes(userName, times);
   }
 
   // Placeholder values for calendar
@@ -36,6 +51,10 @@ export default function Meeting() {
     <Layout>
       <Title>Meeting</Title>
       {meetingData.message}
+
+      <br />
+
+      <NameInput type='text' value={userName} onChange={(event) => setUserName(event.target.value)}/>
 
       <br />
 
