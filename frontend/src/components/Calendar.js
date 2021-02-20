@@ -44,8 +44,10 @@ const ButtonBox = styled.div`
   margin: auto;
 `; 
 
-const Calendar = (startDate, endDate, startTime, endTime, timesInput, edit) => {
-
+const Calendar = (props) => {
+ 
+  const {startDate, endDate, startTime, endTime, timesInput, submitUserTimes, edit} = props;
+  
   const [ timeValues, setTimeValues ] = React.useState(new Array(24 * 7).fill(false));
 
   console.log(timeValues);
@@ -64,10 +66,21 @@ const Calendar = (startDate, endDate, startTime, endTime, timesInput, edit) => {
 
   const handleDrag = (index) => {
     //console.log(index);
-    const newTimeValues = [...timeValues];
-    newTimeValues[index] = busy;
-    if (mouseDown)
-      setTimeValues(newTimeValues);
+    updateTimes(index);
+  }
+
+  const updateTimes = (index) => {
+    if (edit === true) {
+      const newTimeValues = [...timeValues];
+      newTimeValues[index] = busy;
+      if (mouseDown)
+        setTimeValues(newTimeValues);
+    }
+  }
+
+  const processTimes = () => {
+    console.log(timeValues);
+    submitUserTimes(timeValues);
   }
 
   React.useEffect(() => {
@@ -107,6 +120,7 @@ const Calendar = (startDate, endDate, startTime, endTime, timesInput, edit) => {
         <Button>{'<'}</Button>
         <Button>{'>'}</Button>
       </ButtonBox>
+      {edit && <Button onClick={() => processTimes()}>Submit</Button>}
     </Wrapper>
   );
 }

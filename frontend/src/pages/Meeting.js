@@ -17,14 +17,20 @@ export default function Meeting() {
   let { meetingID, password } = useParams();
 
   React.useEffect(
-    () => getMeetingData(meetingID, password, setMeetingData),
+    () => {
+      getMeetingData(meetingID, password, setMeetingData);
+      console.log(meetingData);
+    },
     []
   );
+
+  const submitUserTimes = (timeValues) => {
+    console.log('Called parent function.');
+  }
 
   // Placeholder values for calendar
   const dates = [];
   const times = [];
-  const edit = true;
 
   return (
     <Layout>
@@ -34,8 +40,8 @@ export default function Meeting() {
       <br />
 
       <CalendarWrapper>
-        <Calendar dates times edit />
-        <Calendar dates times edit />
+        <Calendar key={'input'} dates timesInput submitUserTimes={(timeValues) => submitUserTimes(timeValues)} edit={true} />
+        <Calendar key={'output'} dates timesInput edit={false} />
       </CalendarWrapper>
     </Layout>
   );
