@@ -15,7 +15,6 @@ export default function Meeting() {
   const [meetingData, setMeetingData] = React.useState({});
 
   let { meetingID, password } = useParams();
-  console.log(meetingID + ' ' + password);
 
   React.useEffect(
     () => getMeetingData(meetingID, password, setMeetingData),
