@@ -75,9 +75,30 @@ const Calendar = (props) => {
         setTimeValues(newTimeValues);
     }
   }
-
+  /**
+   * Convert timeValues ([true, false, true, ...]) to an array of
+   * strings in postgres date time format
+   */
   const processTimes = () => {
-    submitUserTimes(timeValues);
+    const times = [];
+    for (let day = 0; day < nDays; day++) {
+      for (let time = 0; time < nTimes; time++) {
+        const index = day * nTimes + time;
+        if (timeValues[index]) {
+          const value = startDate + startTime
+          const newTime = {
+            start: '',
+            end: '' // start + timeIncr
+          };
+          if (times[times.length - 1]) {
+            // merge this value into last time if it was right before
+          } else {
+            times.append(newTime);
+          }
+        }
+      }
+    }
+    submitUserTimes(times);
   }
 
   React.useEffect(() => {
@@ -86,7 +107,7 @@ const Calendar = (props) => {
 
 
   const nDays = 7;
-  const timeIncr = 60;
+  const timeIncr = 60; // minutes
   const hours = 24;
   const nTimes = hours * 60 / timeIncr;
   const rows = [];
