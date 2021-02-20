@@ -23,6 +23,7 @@ export default function Meeting() {
   const [ userName, setUserName ] = React.useState('');
 
   let { meetingID, password } = useParams();
+  console.log(meetingID + ' ' + password);
 
   React.useEffect(
     () => {

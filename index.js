@@ -23,13 +23,26 @@ app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 // Create meeting and send back meetCode
 app.post("/api/makeMeeting", (req, res) => {
+  const defaultDate = '2021-02-20 00:00:00-00';
+  const defaultTime = ' 00:00:00-00';
   const meetingID = utils.generateID();
-  const { meetingName } = req.body;
-  const password = utils.generatePassword(); 
+  let { meetingName,
+          startDate,
+          endDate,
+          startTime,
+          endTime } = req.body;
+  
+  // come back to make a more elegant solution
+  startDate = startDate === '' ? defaultDate : startDate + defaultTime;
+  endDate = endDate === '' ? defaultDate : endDate + defaultTime;
+  startTime = startTime === '' ? defaultTime : startTime;
+  endTime = endTime === '' ? defaultTime : endDate;
+  const password = utils.generatePassword();
 
   const query =
-    'insert into meetings (meetingID, meetingName, password) values ($1, $2, $3);';
-  client.query(query, [meetingID, meetingName, password], (err, res) => {
+    `insert into meetings (meetingID, meetingName, password, starttimestamp, endtimestamp, earliesttime, latesttime
+      ) values ($1, $2, $3, $4, $5, $6, $7);`;
+  client.query(query, [meetingID, meetingName, password, startDate, endDate, startTime, endTime], (err, res) => {
     if (err) throw err;
   });
   console.log('Posted new meeting to db.');
@@ -73,16 +86,22 @@ app.get('/api/meetingLogin', (req, res) => {
 // Placeholder for actual meeting data endpoint
 app.get('/api/meeting', (req, res) => {
   const { meetingID, password } = req.query;
-  
+
   // Query database for meeting data
-  const query = 'select * from meetings';
-  client.query(query, (err, resq) => {
+  const query = `select m.meetingname, m.starttimestamp, m.endtimestamp, m.earliesttime, m.latesttime, u.userid, u.username, t.starttime, t.endtime 
+  from meetings m
+  inner join users u
+  on u.meetingid = m.meetingid
+  inner join times t
+  on t.userid = u.userid
+  where m.meetingid = $1 and m.password = $2;`;
+
+  client.query(query, [meetingID, password], (err, resq) => {
     if (err) throw err;
     res.send({
-      
+      data: resq,
     });
   });
-
 });
 
 // The "catchall" handler: for any request that doesn't
