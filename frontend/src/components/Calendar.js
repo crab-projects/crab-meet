@@ -46,13 +46,84 @@ const ButtonBox = styled.div`
 
 const Calendar = (props) => {
  
-  const {startDate, endDate, startTime, endTime, timesInput, submitUserTimes, edit} = props;
-  
-  const [ timeValues, setTimeValues ] = React.useState(new Array(24 * 7).fill(false));
+  const { meetingData, submitUserTimes, edit} = props;
 
   const [ mouseDown, setMouseDown ] = React.useState(false);
   const [ busy, setBusy ] = React.useState(false);
- 
+
+  const datetimeToDate = (date) => {
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return [yyyy, mm, dd].join('-');
+  }
+
+  const datetimeToTime = (date) => {
+    return date.getHours() + ':' + date.getMinutes() + ':00';
+  }
+
+  /**
+   * Takes a string value time of format 'hh:mm:ss-tt'
+   * and converts to a date object of current time
+   */
+  const timeToDatetime = (time) => {
+    console.log(time);
+    const datetime = new Date();
+    const [ hh, mm, ss ] = time.split(':');
+    datetime.setHours(hh, mm, ss.split('-')[0]);
+    return datetime;
+  }
+
+  const addDays = (date, days) => {
+    console.log('date: ' + date);
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + days);
+    return newDate;
+  }
+
+  const addMinutes = (date, minutes) => {
+    return new Date(date.getTime() + minutes * 60 * 1000);
+  }
+
+  const defaultDate = datetimeToDate(addDays(new Date(), -3));
+  const defaultStartTime = '09:00:00-00';
+  const defaultEndTime = '17:00:00-00';
+  let { startDate, endDate, startTime, endTime, timeInputs } = meetingData;
+  startDate = startDate ? startDate : defaultDate;
+  endDate = endDate ? endDate : addDays(Date.parse(startDate), 3).toString();
+  startTime = startTime ? startTime : defaultStartTime;
+  endTime = endTime ? endTime : defaultEndTime;
+
+  const nDays = 7;
+  const timeIncr = 60; // minutes
+  const hours = 24;
+  const nTimes = hours * 60 / timeIncr;
+
+  const fillInitialTimes = (startDate, endDate, startTime, endTime, timeInputs) => {
+    // just account for a single week rn
+    // nullify days of week not in timeframe
+    // nullify times not in timeframe
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+    const startDatetime = timeToDatetime(startTime);
+    const endDatetime = timeToDatetime(endTime);
+    const timeVals = new Array(24 * 7).fill(false);
+    const startDateDay = startDate.getDay();
+    const endDateDay = endDate.getDay();
+    for (let day = 0; day < nDays; day++) {
+      for (let time = 0; time < nTimes; time++) {
+        const index = day * nTimes + time;
+      timeVals[index] = (day >= startDateDay && day <= endDateDay) ? false : null;
+        const thisDatetime = addMinutes(timeToDatetime('00:00:00-00'), timeIncr * time);
+        timeVals[index] = (thisDatetime >= startDatetime && thisDatetime < endDatetime) ? timeVals[index] : null;
+      }
+    }
+    return timeVals;
+  }
+
+  
+  const [ timeValues, setTimeValues ] = React.useState(() => fillInitialTimes(startDate, endDate, startTime, endTime, timeInputs));
+
   const handleMouseDown = (newBusy) => {
     setMouseDown(true);
     setBusy(newBusy);
@@ -68,7 +139,7 @@ const Calendar = (props) => {
   }
 
   const updateTimes = (index) => {
-    if (edit === true) {
+    if (edit === true && timeValues[index] !== null) {
       const newTimeValues = [...timeValues];
       newTimeValues[index] = busy;
       if (mouseDown)
@@ -90,10 +161,10 @@ const Calendar = (props) => {
             start: '',
             end: '' // start + timeIncr
           };
-          if (times[times.length - 1]) {
+          if (times[times.length - 1] && times[times.length - 1]) {
             // merge this value into last time if it was right before
           } else {
-            times.append(newTime);
+            times.push(newTime);
           }
         }
       }
@@ -106,10 +177,6 @@ const Calendar = (props) => {
   }, []);
 
 
-  const nDays = 7;
-  const timeIncr = 60; // minutes
-  const hours = 24;
-  const nTimes = hours * 60 / timeIncr;
   const rows = [];
   const times = [];
   for (let time = 0; time < nTimes; time++) {
@@ -118,7 +185,7 @@ const Calendar = (props) => {
       const index = day * nTimes + time;
       days.push(<td 
                   key={index}
-                  style={{background: (timeValues[index] ? '#ff9e78' : 'transparent')}}
+                  style={{background: (timeValues[index] === null ? 'var(--grey-2)' : timeValues[index] ? '#ff9e78' : 'transparent')}}
                   onMouseDown={() => handleMouseDown(!timeValues[index])}
                   onMouseUp={handleMouseUp}
                   onMouseOver={() => handleDrag(index)}>

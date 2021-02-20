@@ -60,8 +60,8 @@ export default function Meeting() {
       <br />
 
       <CalendarWrapper>
-        <Calendar key={'input'} dates timesInput submitUserTimes={(timeValues) => submitUserTimes(timeValues)} edit={true} />
-        <Calendar key={'output'} dates timesInput edit={false} />
+        <Calendar key={'input'} meetingData submitUserTimes={(timeValues) => submitUserTimes(timeValues)} edit={true} />
+        <Calendar key={'output'} meetingData edit={false} />
       </CalendarWrapper>
     </Layout>
   );
