@@ -22,14 +22,27 @@ client.connect();
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 // Create meeting and send back meetCode
-app.post('/api/makeMeeting', (req, res) => {
+app.post("/api/makeMeeting", (req, res) => {
+  const defaultDate = '2021-02-20 00:00:00-00';
+  const defaultTime = ' 00:00:00-00';
   const meetingID = utils.generateID();
-  const { meetingName } = req.body;
+  let { meetingName,
+          startDate,
+          endDate,
+          startTime,
+          endTime } = req.body;
+  
+  // come back to make a more elegant solution
+  startDate = startDate === '' ? defaultDate : startDate + defaultTime;
+  endDate = endDate === '' ? defaultDate : endDate + defaultTime;
+  startTime = startTime === '' ? defaultTime : startTime;
+  endTime = endTime === '' ? defaultTime : endDate;
   const password = utils.generatePassword();
 
   const query =
-    'insert into meetings (meetingID, meetingName, password) values ($1, $2, $3);';
-  client.query(query, [meetingID, meetingName, password], (err, res) => {
+    `insert into meetings (meetingID, meetingName, password, starttimestamp, endtimestamp, earliesttime, latesttime
+      ) values ($1, $2, $3, $4, $5, $6, $7);`;
+  client.query(query, [meetingID, meetingName, password, startDate, endDate, startTime, endTime], (err, res) => {
     if (err) throw err;
   });
   console.log('Posted new meeting to db.');
