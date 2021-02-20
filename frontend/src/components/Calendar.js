@@ -106,19 +106,21 @@ const Calendar = (props) => {
                   onMouseOver={() => handleDrag(index)}>
                 </td>);
     }
-    times.push(<tr>{days}</tr>);
+    times.push(<tr key={time}>{days}</tr>);
   }
 
   return (
     <Wrapper>
       <div>
         <Grid>
-          {times}
+          <tbody>
+            {times}
+          </tbody>
         </Grid>
       </div>
       <ButtonBox>
-        <Button>{'<'}</Button>
-        <Button>{'>'}</Button>
+        <Button key={'left'}>{'<'}</Button>
+        <Button key={'right'}>{'>'}</Button>
       </ButtonBox>
       {edit && <Button onClick={() => processTimes()}>Submit</Button>}
     </Wrapper>
