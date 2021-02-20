@@ -67,7 +67,6 @@ const Calendar = (props) => {
    * and converts to a date object of current time
    */
   const timeToDatetime = (time) => {
-    console.log(time);
     const datetime = new Date();
     const [ hh, mm, ss ] = time.split(':');
     datetime.setHours(hh, mm, ss.split('-')[0]);
@@ -75,7 +74,6 @@ const Calendar = (props) => {
   }
 
   const addDays = (date, days) => {
-    console.log('date: ' + date);
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + days);
     return newDate;
@@ -113,7 +111,7 @@ const Calendar = (props) => {
     for (let day = 0; day < nDays; day++) {
       for (let time = 0; time < nTimes; time++) {
         const index = day * nTimes + time;
-      timeVals[index] = (day >= startDateDay && day <= endDateDay) ? false : null;
+        timeVals[index] = (day >= startDateDay && day <= endDateDay) ? false : null;
         const thisDatetime = addMinutes(timeToDatetime('00:00:00-00'), timeIncr * time);
         timeVals[index] = (thisDatetime >= startDatetime && thisDatetime < endDatetime) ? timeVals[index] : null;
       }
@@ -156,16 +154,21 @@ const Calendar = (props) => {
       for (let time = 0; time < nTimes; time++) {
         const index = day * nTimes + time;
         if (timeValues[index]) {
-          const value = startDate + startTime
-          const newTime = {
-            start: '',
-            end: '' // start + timeIncr
+          const value = addMinutes(addDays(startDate, day), timeIncr * time);
+          let newTime = {
+            start: value,
+            end: addMinutes(value, timeIncr) // start + timeIncr
           };
-          if (times[times.length - 1] && times[times.length - 1]) {
+          const prevTime = times[times.length - 1];
+          if (prevTime && prevTime.end.getTime() === newTime.start.getTime()) {
             // merge this value into last time if it was right before
-          } else {
-            times.push(newTime);
+            newTime = {
+              start: times[times.length - 1].start,
+              end: newTime.end
+            };
+            times.pop();
           }
+          times.push(newTime);
         }
       }
     }

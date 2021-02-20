@@ -56,8 +56,8 @@ export async function loginMeeting(loginInputs, setLoginResult, history) {
 }
 
 export async function inputUserTimes(userName, times) {
-  console.log(userName);
-  console.log(times);
+  console.log('Username: ' + userName);
+  console.log('Times: ' + times);
 }
 
 export async function getMeetingData(meetingID, password, setMeetingData) {
