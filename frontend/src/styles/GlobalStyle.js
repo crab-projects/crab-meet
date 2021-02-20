@@ -17,10 +17,11 @@ const GlobalStyle = createGlobalStyle`
     --grey-2: #444444;
     --grey-1: #151515;
     --black: #000000;
+    --dark-blue: #001824;
 
-    --background-color: var(--grey-1);
+    --background-color: var(--dark-blue);
     --background-light-color: var(--grey-2);
-    --text-color: var(--grey-3);
+    --text-color: var(--grey-4);
     --text-light-color: var(--grey-4);
     --accent-color: var(--peach);
     --accent-dark-color: var(--dark-peach);
@@ -28,12 +29,12 @@ const GlobalStyle = createGlobalStyle`
     --mono-font: Roboto Mono, monospace;
   }
 
-  html {
-    cursor: none;
-    a:link {
-      cursor: none;
-    }
-  }
+  // html {
+  //   cursor: none;
+  //   a:link {
+  //     cursor: none;
+  //   }
+  // }
 
   body {
     margin: 0;
@@ -61,16 +62,16 @@ const GlobalStyle = createGlobalStyle`
 
     *::selection {
       color: var(--background-color);
-      background-color: #f04646ee;
+      background-color: var(--accent-color);
     }
 
     a {
       text-decoration: none;
       :link {
-        color: var(--accent-1-color);
+        color: var(--accent-color);
       }
       :visited {
-        color: var(--accent-1-color);
+        color: var(--accent-color);
       }
       :hover {
         color: var(--background-color);
