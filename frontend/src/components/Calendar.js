@@ -13,7 +13,7 @@ const Grid = styled.table`
   border-collapse: collapse;
   
   td {
-    border: 1px solid rgb(0, 0, 0, 0.3);
+    border: 1px solid var(--grey-3);
     width: 50px;
     height: 15px;
   }
@@ -87,7 +87,7 @@ const Calendar = (startDate, endDate, startTime, endTime, timesInput, edit) => {
       const index = day * nTimes + time;
       days.push(<td 
                   key={index}
-                  style={{background: (timeValues[index] ? '#ff9e78' : 'white')}}
+                  style={{background: (timeValues[index] ? '#ff9e78' : 'transparent')}}
                   onMouseDown={() => handleMouseDown(!timeValues[index])}
                   onMouseUp={handleMouseUp}
                   onMouseOver={() => handleDrag(index)}>

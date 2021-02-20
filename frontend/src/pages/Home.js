@@ -1,15 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
+import { Layout } from '@components';
+import { Title } from '@styles';
 
 export const Wrapper = styled.div`
-  margin: auto;
-  width: 70%;
-`;
-
-export const Title = styled.h1`
-  font-family: Roboto;
-  font-size: 50px;
+  margin: 4rem auto;
+  width: 100%;
 `;
 
 export const Divider = styled.hr`
@@ -26,7 +24,7 @@ export const Button = styled.button`
   font-weight: 300;
   font-size: 15px;
   background: #ff9e78;
-  color: white;
+  color: var(--background-color);
   border: none;
   border-radius: 3px;
   padding: 15px 20px 15px 20px;
@@ -40,13 +38,17 @@ export const Button = styled.button`
 
 export default function Home() {
   return (
-    <Wrapper>
-      <Title>🦀 CrabMeet</Title>
-      <Divider/>
-      <Subtitle>Get together and have a good time, crab-style: without the hassle.</Subtitle>
-      <Link to="/make">
-        <Button type="button">Make Meeting</Button>
-      </Link>
-    </Wrapper>
+    <Layout>
+      <Wrapper>
+        <Title>🦀 CrabMeet</Title>
+        <Divider />
+        <Subtitle>
+          Time flies. Crabs don't.
+        </Subtitle>
+        <Link to="/make">
+          <Button type="button">Make Meeting</Button>
+        </Link>
+      </Wrapper>
+    </Layout>
   );
 }

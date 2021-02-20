@@ -1,6 +1,8 @@
 import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
+
 import { getMeetingName, loginMeeting } from '../api';
+import { Layout } from '@components';
 
 export default function MeetingLogin() {
   let { meetingID } = useParams();
@@ -24,7 +26,7 @@ export default function MeetingLogin() {
   };
 
   return (
-    <>
+    <Layout>
       <h1>Login</h1>
       <h3>MeetingID: {meetingID}</h3>
       <h3>Meeting Name: {meetingName}</h3>
@@ -57,6 +59,6 @@ export default function MeetingLogin() {
             : 'Password is incorrect. Try again.'
           : ''}
       </p>
-    </>
+    </Layout>
   );
 }

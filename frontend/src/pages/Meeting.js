@@ -1,14 +1,15 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+
 import { getMeetingData } from '../api';
-import { Calendar } from '@components/index.js';
 import styled from 'styled-components';
+import { Calendar, Layout } from '@components';
+import { Title } from '@styles';
 
 const CalendarWrapper = styled.div`
   display: flex;
   justify-content: space-around;
 `;
-
 
 export default function Meeting() {
   const [meetingData, setMeetingData] = React.useState({});
@@ -26,16 +27,16 @@ export default function Meeting() {
   const edit = true;
 
   return (
-    <>
-      <h1>Meeting</h1>
+    <Layout>
+      <Title>Meeting</Title>
       {meetingData.message}
 
-      <br/>
+      <br />
 
       <CalendarWrapper>
-        <Calendar dates times edit/>
-        <Calendar dates times edit/>
+        <Calendar dates times edit />
+        <Calendar dates times edit />
       </CalendarWrapper>
-   </>
+    </Layout>
   );
 }
