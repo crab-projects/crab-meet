@@ -22,10 +22,10 @@ client.connect();
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 // Create meeting and send back meetCode
-app.post('/api/makeMeeting', (req, res) => {
+app.post("/api/makeMeeting", (req, res) => {
   const meetingID = utils.generateID();
   const { meetingName } = req.body;
-  const password = utils.generatePassword();
+  const password = utils.generatePassword(); 
 
   const query =
     'insert into meetings (meetingID, meetingName, password) values ($1, $2, $3);';
@@ -73,22 +73,16 @@ app.get('/api/meetingLogin', (req, res) => {
 // Placeholder for actual meeting data endpoint
 app.get('/api/meeting', (req, res) => {
   const { meetingID, password } = req.query;
-
+  
   // Query database for meeting data
-  const query = `select m.meetingname, m.starttimestamp, m.endtimestamp, m.earliesttime, m.latesttime, u.userid, u.username, t.starttime, t.endtime 
-  from meetings m
-  inner join users u
-  on u.meetingid = m.meetingid
-  inner join times t
-  on t.userid = u.userid
-  where m.meetingid = $1 and m.password = $2;`;
-
-  client.query(query, [meetingID, password], (err, resq) => {
+  const query = 'select * from meetings';
+  client.query(query, (err, resq) => {
     if (err) throw err;
     res.send({
-      data: resq,
+      
     });
   });
+
 });
 
 // The "catchall" handler: for any request that doesn't
