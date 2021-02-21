@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { getMeetingData, inputUserTimes } from '../api';
 import styled from 'styled-components';
 import { Calendar, Layout } from '@components';
-import { Title } from '@styles';
+import { Title, Button } from '@styles';
 
 const CalendarWrapper = styled.div`
   display: flex;
@@ -14,6 +14,10 @@ const CalendarWrapper = styled.div`
 const NameInput = styled.input`
   width: 40%;
   margin-left: 2rem;
+`;
+
+const ButtonWrapper = styled.div`
+  width: 150px;
 `;
 
 export default function Meeting() {
@@ -42,7 +46,21 @@ export default function Meeting() {
 
   const submitUserTimes = (times) => {
     inputUserTimes(userName, times);
+  };
+
+  const copyLink = (str) => {
+    const el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
   }
+
+
 
   // Placeholder values for calendar
   const dates = [];
@@ -50,10 +68,13 @@ export default function Meeting() {
 
   const LOCAL = true;
 
+  const meetingLink = window.location.hostname + (LOCAL === true ? ':' + window.location.port : '') + '/meetingLogin/' + meetingID;
+
   return (
     <Layout>
       <Title>Meeting</Title>
-      <p>Meeting link: {window.location.hostname + (LOCAL === true ? ':' + window.location.port : '') + '/meetingLogin/' + meetingID}</p>
+      <p>Meeting link: {meetingLink}</p>
+      <ButtonWrapper><Button onClick={() => copyLink(meetingLink)}>Copy link</Button></ButtonWrapper>
       <p>Meeting password: {password}</p>
 
       <br />
