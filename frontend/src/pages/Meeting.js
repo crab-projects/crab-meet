@@ -32,7 +32,6 @@ export default function Meeting() {
   React.useEffect(
     () => {
       getMeetingData(meetingID, password, setMeetingData);
-      console.log(meetingData);
     },
     []
   );
@@ -45,7 +44,7 @@ export default function Meeting() {
   );
 
   const submitUserTimes = (times) => {
-    inputUserTimes(userName, times);
+    inputUserTimes(meetingID, password, userName, times);
   };
 
   const copyLink = (str) => {
@@ -59,13 +58,7 @@ export default function Meeting() {
     document.execCommand('copy');
     document.body.removeChild(el);
   }
-
-
-
-  // Placeholder values for calendar
-  const dates = [];
-  const times = [];
-
+  
   const LOCAL = true;
 
   const meetingLink = window.location.hostname + (LOCAL === true ? ':' + window.location.port : '') + '/meetingLogin/' + meetingID;
@@ -84,8 +77,8 @@ export default function Meeting() {
       <br />
 
       <CalendarWrapper>
-        <Calendar key={'input'} meetingData submitUserTimes={(timeValues) => submitUserTimes(timeValues)} edit={true} />
-        <Calendar key={'output'} meetingData edit={false} />
+        <Calendar key={'input'} meetingData={meetingData} submitUserTimes={(timeValues) => submitUserTimes(timeValues)} edit={true} />
+        <Calendar key={'output'} meetingData={meetingData} edit={false} />
       </CalendarWrapper>
     </Layout>
   );

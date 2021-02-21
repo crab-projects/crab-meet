@@ -86,6 +86,8 @@ const Calendar = (props) => {
   const defaultDate = datetimeToDate(addDays(new Date(), -3));
   const defaultStartTime = '09:00:00-00';
   const defaultEndTime = '17:00:00-00';
+  console.log('Meeting data: ');
+  console.log(meetingData.data);
   let { startDate, endDate, startTime, endTime, timeInputs } = meetingData;
   startDate = startDate ? startDate : defaultDate;
   endDate = endDate ? endDate : datetimeToDate(addDays(Date.parse(startDate), 3));
