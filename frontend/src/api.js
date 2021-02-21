@@ -62,8 +62,8 @@ export async function inputUserTimes(meetingID, password, userName, times) {
   axios
     .post(API_PATH + '/api/userInput/' + meetingID, { password, userName, times })
     .then((res) => {
-      const { message } = res.data;
-      console.log(message);
+      //const { createUserMessage, inputTimesMessage } = res.data;
+      console.log('Response: ' + res);
     })
     .catch((error) => {
       console.log(error);
