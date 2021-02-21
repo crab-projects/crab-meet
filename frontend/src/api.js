@@ -9,7 +9,7 @@ export async function handleSubmit(meetingInputs, history) {
     .post(API_PATH + '/api/makeMeeting', meetingInputs)
     .then((res) => {
       const { meetingID, password } = res.data;
-      const newUrl = '/meetingLogin/' + meetingID;
+      const newUrl = '/meeting/' + meetingID + '/password/' + password;
       history.push(newUrl);
     })
     .catch((error) => {
