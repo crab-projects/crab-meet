@@ -86,13 +86,13 @@ const Calendar = (props) => {
   const defaultDate = datetimeToDate(addDays(new Date(), -3));
   const defaultStartTime = '09:00:00-00';
   const defaultEndTime = '17:00:00-00';
-  console.log('Meeting data: ');
-  console.log(meetingData.data);
   let { startDate, endDate, startTime, endTime, timeInputs } = meetingData;
   startDate = startDate ? startDate : defaultDate;
   endDate = endDate ? endDate : datetimeToDate(addDays(Date.parse(startDate), 3));
   startTime = startTime ? startTime : defaultStartTime;
   endTime = endTime ? endTime : defaultEndTime;
+
+  
 
   const nDays = 7;
   const timeIncr = 60; // minutes
@@ -103,6 +103,11 @@ const Calendar = (props) => {
     // just account for a single week rn
     // nullify days of week not in timeframe
     // nullify times not in timeframe
+    console.log('DATA: ');
+    console.log(startDate);
+    console.log(endDate);
+    console.log(startTime);
+    console.log(endTime);
     startDate = new Date(startDate);
     endDate = new Date(endDate);
     const startDatetime = timeToDatetime(startTime);
@@ -178,8 +183,8 @@ const Calendar = (props) => {
   }
 
   React.useEffect(() => {
-    console.log(mouseDown);
-  }, []);
+    setTimeValues(() => fillInitialTimes(startDate, endDate, startTime, endTime, timeInputs));
+  }, [meetingData]);
 
 
   const rows = [];

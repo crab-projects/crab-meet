@@ -22,25 +22,21 @@ const ButtonWrapper = styled.div`
 
 export default function Meeting() {
 
-  const [meetingData, setMeetingData] = React.useState({});
+  const [ meetingData, setMeetingData ] = React.useState({});
+  const [ timeData, setTimeData ] = React.useState({});
 
   const [ userName, setUserName ] = React.useState('');
 
+  
+
   let { meetingID, password } = useParams();
   console.log(meetingID + ' ' + password);
-
+  
   React.useEffect(
     () => {
-      getMeetingData(meetingID, password, setMeetingData);
+      getMeetingData(meetingID, password, setMeetingData, setTimeData);
     },
     []
-  );
-
-  React.useEffect(
-    () => {
-      console.log(userName);
-    },
-    [userName]
   );
 
   const submitUserTimes = (times) => {
@@ -62,7 +58,12 @@ export default function Meeting() {
   const LOCAL = true;
 
   const meetingLink = window.location.hostname + (LOCAL === true ? ':' + window.location.port : '') + '/meetingLogin/' + meetingID;
-
+  const calendarData = {
+    ...meetingData,
+    ...timeData
+  };
+  console.log('CALENDAR DATA: ');
+  console.log(calendarData);
   return (
     <Layout>
       <Title>Meeting</Title>
@@ -77,8 +78,8 @@ export default function Meeting() {
       <br />
 
       <CalendarWrapper>
-        <Calendar key={'input'} meetingData={meetingData} submitUserTimes={(timeValues) => submitUserTimes(timeValues)} edit={true} />
-        <Calendar key={'output'} meetingData={meetingData} edit={false} />
+        <Calendar key={'input'} meetingData={calendarData} submitUserTimes={(timeValues) => submitUserTimes(timeValues)} edit={true} />
+        <Calendar key={'output'} meetingData={calendarData} edit={false} />
       </CalendarWrapper>
     </Layout>
   );

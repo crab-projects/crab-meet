@@ -58,15 +58,24 @@ app.post("/api/makeMeeting", (req, res) => {
 app.get('/api/meeting/:meetingID', (req, res) => {
   const { meetingID } = req.params;
   // Query database for meeting name
-  const query = 'select meetingName from meetings where meetingID = $1';
+  const query = 'select meetingname, starttimestamp, endtimestamp, earliesttime, latesttime from meetings where meetingID = $1';
   client.query(query, [meetingID], (err, resq) => {
     if (err) throw err;
-    console.log(resq.rows[0].meetingname);
-    meetingName = resq.rows[0].meetingname;
-    res.send({
-      meetingName,
-    });
-    console.log('meetingName inside:' + meetingName);
+    let response = {
+      success: resq.rows.length > 0
+    };
+    if (response.success) {
+      const { meetingname, starttimestamp, endtimestamp, earliesttime, latesttime } = resq.rows[0];
+      response = {
+        ...response,
+        meetingName: meetingname,
+        startDate: starttimestamp,
+        endDate: endtimestamp,
+        startTime: earliesttime,
+        endTime: latesttime,
+      };
+    }
+    res.send(response);
   });
 });
 
@@ -99,9 +108,19 @@ app.get('/api/meeting', (req, res) => {
 
   client.query(query, [meetingID, password], (err, resq) => {
     if (err) throw err;
-    res.send({
-      data: resq,
+    console.log(resq.rows);
+    const rows = [];
+    resq.rows.forEach((row) => {
+      const { starttime, endtime } = row;
+      rows.push({
+        start: starttime,
+        end: endtime
+      });
     });
+    const response = {
+      timeInputs: rows
+    }
+    res.send(response);
   });
 });
 
@@ -150,7 +169,7 @@ app.post("/api/userInput/:meetingID", (req, res, next) => {
   console.log('timesQuery: ' + timesQuery);
   client.query(timesQuery, [ userID, ...timesList ], (err, resq) => {
     if (err) throw err;
-    response.inputTimesMessage = 'Add user times.';
+    response.inputTimesMessage = 'Added user times.';
     res.send({
       message: response // for some reason it only works if you send back data in the key 'message'
     });
