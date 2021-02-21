@@ -41,7 +41,7 @@ export default function Meeting() {
   );
 
   const submitUserTimes = (times) => {
-    inputUserTimes(userName, times);
+    inputUserTimes(meetingID, password, userName, times);
   }
 
   // Placeholder values for calendar
