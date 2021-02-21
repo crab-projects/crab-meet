@@ -48,10 +48,13 @@ export default function Meeting() {
   const dates = [];
   const times = [];
 
+  const LOCAL = true;
+
   return (
     <Layout>
       <Title>Meeting</Title>
-      {meetingData.message}
+      <p>Meeting link: {window.location.hostname + (LOCAL === true ? ':' + window.location.port : '') + '/meetingLogin/' + meetingID}</p>
+      <p>Meeting password: {password}</p>
 
       <br />
 
