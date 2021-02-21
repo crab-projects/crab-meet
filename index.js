@@ -37,7 +37,7 @@ app.post("/api/makeMeeting", (req, res) => {
   startDate = startDate === '' ? defaultDate : startDate + defaultTime;
   endDate = endDate === '' ? defaultDate : endDate + defaultTime;
   startTime = startTime === '' ? defaultTime : startTime;
-  endTime = endTime === '' ? defaultTime : endDate;
+  endTime = endTime === '' ? defaultTime : endTime;
   const password = utils.generatePassword();
 
   const query =
