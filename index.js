@@ -10,6 +10,7 @@ app.use(cors());
 
 // Connect to PostgreSQL DB
 const { Client } = require('pg');
+const { nextTick } = require('process');
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -105,7 +106,7 @@ app.get('/api/meeting', (req, res) => {
 });
 
 // Create meeting and send back meetCode
-app.post("/api/userInput/:meetingID", (req, res) => {
+app.post("/api/userInput/:meetingID", (req, res, next) => {
   const userID = utils.generateID(); 
   const { meetingID } = req.params;
   const { password, userName, times } = req.body;
@@ -126,6 +127,13 @@ app.post("/api/userInput/:meetingID", (req, res) => {
     if (err) throw err;
     response.createUserMessage = 'Created user' + userName;
   });
+
+  if (times.length === 0) {
+    res.send({
+      message: response
+    });
+    return next();
+  }
 
   const queryValues = [];
   const timesList = [];
