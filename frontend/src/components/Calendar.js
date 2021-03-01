@@ -119,7 +119,7 @@ const Calendar = (props) => {
       for (let time = 0; time < nTimes; time++) {
         const index = day * nTimes + time;
         console.log(startDateDay, endDateDay, day);
-        timeVals[index] = (day >= startDateDay && day <= endDateDay) ? false : null;
+        timeVals[index] = (day >= startDateDay && day <= endDateDay) ? timeValues[index] : null;
         const thisDatetime = addMinutes(timeToDatetime('00:00:00+00'), timeIncr * time);
         //console.log('thisDatetime ' + thisDatetime, startDatetime, endDatetime);
         timeVals[index] = (thisDatetime >= startDatetime && thisDatetime < endDatetime) ? timeVals[index] : null;
