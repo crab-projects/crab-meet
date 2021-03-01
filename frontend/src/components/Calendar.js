@@ -69,7 +69,7 @@ const Calendar = (props) => {
   const timeToDatetime = (time) => {
     const datetime = new Date();
     const [ hh, mm, ss ] = time.split(':');
-    datetime.setHours(hh, mm, ss.split('-')[0]);
+    datetime.setHours(hh, mm, ss.split('+')[0]);
     return datetime;
   }
 
@@ -87,10 +87,12 @@ const Calendar = (props) => {
   const defaultStartTime = '09:00:00-00';
   const defaultEndTime = '17:00:00-00';
   let { startDate, endDate, startTime, endTime, timeInputs } = meetingData;
-  startDate = startDate ? startDate : defaultDate;
-  endDate = endDate ? endDate : datetimeToDate(addDays(Date.parse(startDate), 3));
+  startDate = startDate ? startDate.substring(0, 10) : defaultDate;
+  endDate = endDate ? endDate.substring(0, 10) : datetimeToDate(addDays(Date.parse(startDate), 3));
   startTime = startTime ? startTime : defaultStartTime;
   endTime = endTime ? endTime : defaultEndTime;
+
+  
 
   const nDays = 7;
   const timeIncr = 60; // minutes
@@ -101,26 +103,57 @@ const Calendar = (props) => {
     // just account for a single week rn
     // nullify days of week not in timeframe
     // nullify times not in timeframe
+    console.log('DATA: ');
+    console.log(startDate);
+    console.log(endDate);
+    // console.log(startTime);
+    // console.log(endTime);
     startDate = new Date(startDate);
     endDate = new Date(endDate);
     const startDatetime = timeToDatetime(startTime);
     const endDatetime = timeToDatetime(endTime);
-    const timeVals = new Array(24 * 7).fill(false);
-    const startDateDay = startDate.getDay();
-    const endDateDay = endDate.getDay();
+
+    // Get time inputs to display
+    const userTimeVals = new Array(nDays * nTimes).fill(0);
+    if (timeInputs != null) {
+      timeInputs.forEach((userTime) => {
+        const { start, end } = userTime;
+        console.log("User time");
+        for (let d = Date.parse(start); d < Date.parse(end); d = addMinutes(d, 60)) {
+          d = new Date(d);
+          const index = ((d.getDay() - 0) % 7) * nTimes + d.getHours() + 6; // +6 is for timezone
+          console.log(index);
+          userTimeVals[index]++;
+        }
+      });
+    }
+    
+    console.log(userTimeVals);
+
+    // Fill out box with times
+    const timeVals = [];
+    for (let i = 0; i < timeValues.length; i++) {
+      timeVals[i] = timeValues[i] !== null ? timeValues[i] : false;
+    }
+    const startDateDay = (startDate.getDay() + 1) % 7;
+    const endDateDay = (endDate.getDay() + 1) % 7;
     for (let day = 0; day < nDays; day++) {
       for (let time = 0; time < nTimes; time++) {
         const index = day * nTimes + time;
-        timeVals[index] = (day >= startDateDay && day <= endDateDay) ? false : null;
-        const thisDatetime = addMinutes(timeToDatetime('00:00:00-00'), timeIncr * time);
+        console.log(startDateDay, endDateDay, day);
+        timeVals[index] = (day >= startDateDay && day <= endDateDay) ? timeVals[index] : null;
+        const thisDatetime = addMinutes(timeToDatetime('00:00:00+00'), timeIncr * time);
+        //console.log('thisDatetime ' + thisDatetime, startDatetime, endDatetime);
         timeVals[index] = (thisDatetime >= startDatetime && thisDatetime < endDatetime) ? timeVals[index] : null;
+        //timeVals[index] = edit === false ? userTimeVals[index] : timeVals[index];
+        timeVals[index] = (edit === false && timeVals[index] !== null) ? userTimeVals[index] : timeVals[index];
       }
     }
     return timeVals;
   }
 
   
-  const [ timeValues, setTimeValues ] = React.useState(() => fillInitialTimes(startDate, endDate, startTime, endTime, timeInputs));
+  const [ timeValues, setTimeValues ] = React.useState(new Array(24 * 7).fill(false));//() => fillInitialTimes(startDate, endDate, startTime, endTime, timeInputs));
 
   const handleMouseDown = (newBusy) => {
     setMouseDown(true);
@@ -176,8 +209,8 @@ const Calendar = (props) => {
   }
 
   React.useEffect(() => {
-    console.log(mouseDown);
-  }, []);
+    setTimeValues(() => fillInitialTimes(startDate, endDate, startTime, endTime, meetingData.timeInputs));
+  }, [meetingData]);
 
 
   const rows = [];
@@ -188,7 +221,8 @@ const Calendar = (props) => {
       const index = day * nTimes + time;
       days.push(<td 
                   key={index}
-                  style={{background: (timeValues[index] === null ? 'var(--grey-2)' : timeValues[index] ? '#ff9e78' : 'transparent')}}
+                  style={{background: (timeValues[index] === null ? 'var(--grey-2)' : timeValues[index] ? '#ff9e78' : 'transparent'),
+                          opacity: (timeValues[index] === null || isNaN(timeValues[index]) ? 1 : (timeValues[index] + 1) / (Math.max(...timeValues) + 1))}}
                   onMouseDown={() => handleMouseDown(!timeValues[index])}
                   onMouseUp={handleMouseUp}
                   onMouseOver={() => handleDrag(index)}>

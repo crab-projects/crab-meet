@@ -70,7 +70,7 @@ export async function inputUserTimes(meetingID, password, userName, times) {
     });
 }
 
-export async function getMeetingData(meetingID, password, setMeetingData) {
+export async function getMeetingData(meetingID, password, setMeetingData, setTimeData) {
   axios
     .get(API_PATH +
         '/api/meeting/?meetingID=' +
@@ -79,8 +79,26 @@ export async function getMeetingData(meetingID, password, setMeetingData) {
         password
     )
     .then((res) => {
+      console.log('GET TIMEVALUES RES: ');
       console.log(res);
-      setMeetingData(res.data);
+      const newTimeData = {
+        ...res.data
+      }
+      console.log(newTimeData)
+      setTimeData(newTimeData);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  axios
+    .get(API_PATH + '/api/meeting/' + meetingID)
+    .then((res) => {
+      console.log('GET MEETING DATA RES: ');
+      console.log(res);
+      const newMeetingData = {
+        ...res.data
+      }
+      setMeetingData(newMeetingData);
     })
     .catch((error) => {
       console.log(error);
