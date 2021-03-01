@@ -121,7 +121,7 @@ const Calendar = (props) => {
         console.log("User time");
         for (let d = Date.parse(start); d < Date.parse(end); d = addMinutes(d, 60)) {
           d = new Date(d);
-          const index = ((d.getDay() - 0) % 7) * nTimes + d.getHours() + 6; // +6 is for timezone
+          const index = ((d.getDay() - 1) % 7) * nTimes + d.getHours() + 6; // +6 is for timezone
           console.log(index);
           userTimeVals[index]++;
         }
