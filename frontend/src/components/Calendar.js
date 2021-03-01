@@ -112,14 +112,17 @@ const Calendar = (props) => {
     endDate = new Date(endDate);
     const startDatetime = timeToDatetime(startTime);
     const endDatetime = timeToDatetime(endTime);
-    const timeVals = new Array(24 * 7).fill(false);
+    const timeVals = [];
+    for (let i = 0; i < timeValues.length; i++) {
+      timeVals[i] = timeValues[i] !== null ? timeValues[i] : false;
+    }
     const startDateDay = (startDate.getDay() + 1) % 7;
     const endDateDay = (endDate.getDay() + 1) % 7;
     for (let day = 0; day < nDays; day++) {
       for (let time = 0; time < nTimes; time++) {
         const index = day * nTimes + time;
         console.log(startDateDay, endDateDay, day);
-        timeVals[index] = (day >= startDateDay && day <= endDateDay) ? timeValues[index] : null;
+        timeVals[index] = (day >= startDateDay && day <= endDateDay) ? timeVals[index] : null;
         const thisDatetime = addMinutes(timeToDatetime('00:00:00+00'), timeIncr * time);
         //console.log('thisDatetime ' + thisDatetime, startDatetime, endDatetime);
         timeVals[index] = (thisDatetime >= startDatetime && thisDatetime < endDatetime) ? timeVals[index] : null;
@@ -129,7 +132,7 @@ const Calendar = (props) => {
   }
 
   
-  const [ timeValues, setTimeValues ] = React.useState(() => fillInitialTimes(startDate, endDate, startTime, endTime, timeInputs));
+  const [ timeValues, setTimeValues ] = React.useState(new Array(24 * 7).fill(false));//() => fillInitialTimes(startDate, endDate, startTime, endTime, timeInputs));
 
   const handleMouseDown = (newBusy) => {
     setMouseDown(true);
