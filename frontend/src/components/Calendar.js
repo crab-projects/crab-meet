@@ -69,7 +69,7 @@ const Calendar = (props) => {
   const timeToDatetime = (time) => {
     const datetime = new Date();
     const [ hh, mm, ss ] = time.split(':');
-    datetime.setHours(hh, mm, ss.split('-')[0]);
+    datetime.setHours(hh, mm, ss.split('+')[0]);
     return datetime;
   }
 
@@ -87,8 +87,8 @@ const Calendar = (props) => {
   const defaultStartTime = '09:00:00-00';
   const defaultEndTime = '17:00:00-00';
   let { startDate, endDate, startTime, endTime, timeInputs } = meetingData;
-  startDate = startDate ? startDate : defaultDate;
-  endDate = endDate ? endDate : datetimeToDate(addDays(Date.parse(startDate), 3));
+  startDate = startDate ? startDate.substring(0, 10) : defaultDate;
+  endDate = endDate ? endDate.substring(0, 10) : datetimeToDate(addDays(Date.parse(startDate), 3));
   startTime = startTime ? startTime : defaultStartTime;
   endTime = endTime ? endTime : defaultEndTime;
 
@@ -106,20 +106,22 @@ const Calendar = (props) => {
     console.log('DATA: ');
     console.log(startDate);
     console.log(endDate);
-    console.log(startTime);
-    console.log(endTime);
+    // console.log(startTime);
+    // console.log(endTime);
     startDate = new Date(startDate);
     endDate = new Date(endDate);
     const startDatetime = timeToDatetime(startTime);
     const endDatetime = timeToDatetime(endTime);
     const timeVals = new Array(24 * 7).fill(false);
-    const startDateDay = startDate.getDay();
-    const endDateDay = endDate.getDay();
+    const startDateDay = (startDate.getDay() + 1) % 7;
+    const endDateDay = (endDate.getDay() + 1) % 7;
     for (let day = 0; day < nDays; day++) {
       for (let time = 0; time < nTimes; time++) {
         const index = day * nTimes + time;
+        console.log(startDateDay, endDateDay, day);
         timeVals[index] = (day >= startDateDay && day <= endDateDay) ? false : null;
-        const thisDatetime = addMinutes(timeToDatetime('00:00:00-00'), timeIncr * time);
+        const thisDatetime = addMinutes(timeToDatetime('00:00:00+00'), timeIncr * time);
+        //console.log('thisDatetime ' + thisDatetime, startDatetime, endDatetime);
         timeVals[index] = (thisDatetime >= startDatetime && thisDatetime < endDatetime) ? timeVals[index] : null;
       }
     }
