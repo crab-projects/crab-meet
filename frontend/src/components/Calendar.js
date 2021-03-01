@@ -112,6 +112,25 @@ const Calendar = (props) => {
     endDate = new Date(endDate);
     const startDatetime = timeToDatetime(startTime);
     const endDatetime = timeToDatetime(endTime);
+
+    // Get time inputs to display
+    const userTimeVals = new Array(nDays * nTimes).fill(0);
+    if (timeInputs != null) {
+      timeInputs.forEach((userTime) => {
+        const { start, end } = userTime;
+        console.log("User time");
+        for (let d = Date.parse(start); d < Date.parse(end); d = addMinutes(d, 60)) {
+          d = new Date(d);
+          const index = ((d.getDay() - 0) % 7) * nTimes + d.getHours() + 6; // +6 is for timezone
+          console.log(index);
+          userTimeVals[index]++;
+        }
+      });
+    }
+    
+    console.log(userTimeVals);
+
+    // Fill out box with times
     const timeVals = [];
     for (let i = 0; i < timeValues.length; i++) {
       timeVals[i] = timeValues[i] !== null ? timeValues[i] : false;
@@ -126,6 +145,8 @@ const Calendar = (props) => {
         const thisDatetime = addMinutes(timeToDatetime('00:00:00+00'), timeIncr * time);
         //console.log('thisDatetime ' + thisDatetime, startDatetime, endDatetime);
         timeVals[index] = (thisDatetime >= startDatetime && thisDatetime < endDatetime) ? timeVals[index] : null;
+        //timeVals[index] = edit === false ? userTimeVals[index] : timeVals[index];
+        timeVals[index] = (edit === false && timeVals[index] !== null) ? userTimeVals[index] : timeVals[index];
       }
     }
     return timeVals;
@@ -188,7 +209,7 @@ const Calendar = (props) => {
   }
 
   React.useEffect(() => {
-    setTimeValues(() => fillInitialTimes(startDate, endDate, startTime, endTime, timeInputs));
+    setTimeValues(() => fillInitialTimes(startDate, endDate, startTime, endTime, meetingData.timeInputs));
   }, [meetingData]);
 
 
@@ -200,7 +221,8 @@ const Calendar = (props) => {
       const index = day * nTimes + time;
       days.push(<td 
                   key={index}
-                  style={{background: (timeValues[index] === null ? 'var(--grey-2)' : timeValues[index] ? '#ff9e78' : 'transparent')}}
+                  style={{background: (timeValues[index] === null ? 'var(--grey-2)' : timeValues[index] ? '#ff9e78' : 'transparent'),
+                          opacity: (timeValues[index] === null || isNaN(timeValues[index]) ? 1 : (timeValues[index] + 1) / (Math.max(...timeValues) + 1))}}
                   onMouseDown={() => handleMouseDown(!timeValues[index])}
                   onMouseUp={handleMouseUp}
                   onMouseOver={() => handleDrag(index)}>
